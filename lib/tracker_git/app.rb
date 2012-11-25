@@ -29,9 +29,18 @@ module TrackerGit
     on '--current-branch', '-c',
        'Do not specify a branch to use when searching commit messages'
 
-    arg :tracker_project_id, :optional
-    arg :tracker_api_token, :optional
-    arg :git_branch, :optional
+    arg :tracker_project_id, :optional,
+        "A Tracker project ID is required. Pass it as an argument, or set the\n" +
+          "\tenvironment variable TRACKER_PROJECT_ID."
+
+    arg :tracker_api_token, :optional,
+        "An API token is required. Pass it as an argument, or set the\n" +
+          "\tenvironment variable TRACKER_TOKEN."
+
+    arg :git_branch, :optional,
+        "Which branch to search for commit messages. Pass it as an argument,\n"+
+          "\tor set the environment variable GIT_BRANCH. 'master' is the default.\n" +
+          "\tOr specify no branch using the --current-branch flag."
 
     use_log_level_option
 
