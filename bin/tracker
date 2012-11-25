@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'tracker_git'
+require 'tracker_git/app'
 
 TrackerGit::App.go!
