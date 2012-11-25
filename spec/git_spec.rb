@@ -8,9 +8,23 @@ describe TrackerGit::Git do
     it { should == 'branch' }
   end
 
+  describe '#log_command' do
+    subject { git.log_command }
+
+    context 'when the branch is not set' do
+      let(:git) { TrackerGit::Git.new false }
+      it { should == 'git log' }
+    end
+
+    context 'when the branch is set' do
+      let(:git) { TrackerGit::Git.new 'foo' }
+      it { should == 'git log foo' }
+    end
+  end
+
   describe '#contains?' do
     let(:story_id) { '123456' }
-    let(:log_command) { "git log foo --grep='#{story_id}' --exit-code" }
+    let(:log_command) { "git log foo --exit-code --grep='#{story_id}'" }
     let(:git) { TrackerGit::Git.new 'foo' }
 
     before do

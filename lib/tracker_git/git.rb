@@ -13,8 +13,12 @@ module TrackerGit
       @branch = branch
     end
 
+    def log_command
+      "git log #{branch if branch}".strip
+    end
+
     def contains?(story_id)
-      exit_code = sh "git log #{branch} --grep='#{story_id}' --exit-code"
+      exit_code = sh "#{log_command} --exit-code --grep='#{story_id}'"
       exit_code == 1
     end
   end

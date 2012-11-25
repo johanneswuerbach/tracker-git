@@ -27,9 +27,25 @@ describe TrackerGit::App do
     end
 
     describe '.git' do
-      before { main_block.call }
       subject { app.git }
-      its(:branch) { should == 'master' }
+
+      context 'when --no-branch is not set' do
+        before do
+          TrackerGit::App.stub(:options).and_return({})
+          main_block.call
+        end
+
+        its(:branch) { should == 'master' }
+      end
+
+      context 'when --no-branch is set' do
+        before do
+          TrackerGit::App.stub(:options).and_return('current-branch' => true)
+          main_block.call
+        end
+
+        its(:branch) { should be_nil }
+      end
     end
 
     describe '.project' do
