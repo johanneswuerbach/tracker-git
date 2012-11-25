@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Tracker::Git do
+describe TrackerGit::Git do
   describe "#search" do
     let(:message) { "[Finishes #123456]" }
     let(:branch) { "master" }
@@ -10,7 +10,7 @@ describe Tracker::Git do
     before do
       git.should_receive(:`).with(query) { result }
     end
-    let(:git) { Tracker::Git.new }
+    let(:git) { TrackerGit::Git.new }
 
     context "defaults" do
       it "searches via system calls using default branch" do

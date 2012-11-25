@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/tracker-git/version', __FILE__)
+require File.expand_path('../lib/tracker_git/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Robbie Clutton"]
@@ -18,5 +18,5 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "tracker-git"
   gem.require_paths = ["lib"]
-  gem.version       = Tracker::VERSION
+  gem.version       = TrackerGit::VERSION
 end

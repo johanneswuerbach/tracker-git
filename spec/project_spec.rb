@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Tracker::Project do
+describe TrackerGit::Project do
 
   let(:tracker_token) { stub }
   let(:project_id) { stub }
@@ -10,7 +10,7 @@ describe Tracker::Project do
 
   describe "#initialize" do
     it "initializes the project class" do
-      project = Tracker::Project.new(tracker_token, project_id)
+      project = TrackerGit::Project.new(tracker_token, project_id)
       project.should be
       project.tracker_token.should == tracker_token
       project.project_id.should == project_id
@@ -28,13 +28,13 @@ describe Tracker::Project do
     end
 
     it "retrieves finished stories and bugs" do
-      project = Tracker::Project.new(tracker_token, project_id)
+      project = TrackerGit::Project.new(tracker_token, project_id)
       project.finished.should == [feature, bug]
     end
   end
 
   describe "#deliver" do
-    let(:project) { Tracker::Project.new(stub, stub) }
+    let(:project) { TrackerGit::Project.new(stub, stub) }
     let(:story) { stub }
 
     it "marks the story as delivered" do

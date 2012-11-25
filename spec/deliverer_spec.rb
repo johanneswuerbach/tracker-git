@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Tracker::Deliverer do
+describe TrackerGit::Deliverer do
 
   let(:tracker_token) { stub }
   let(:project_id) { stub }
@@ -9,7 +9,7 @@ describe Tracker::Deliverer do
   let(:finished_stories) { [commited_story, uncommited_story] }
   let(:project) { stub }
   let(:git) { stub }
-  let(:deliverer) { Tracker::Deliverer.new(project, git) }
+  let(:deliverer) { TrackerGit::Deliverer.new(project, git) }
 
   describe '#mark_as_delivered' do
     context 'when called without argument' do

@@ -1,4 +1,4 @@
-module Tracker
+module TrackerGit
   class Deliverer
     attr_reader :project, :git
     def initialize(project, git)

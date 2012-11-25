@@ -1,6 +1,6 @@
 require 'pivotal-tracker'
 
-module Tracker
+module TrackerGit
   class Project
 
     attr_reader :tracker_token, :project_id

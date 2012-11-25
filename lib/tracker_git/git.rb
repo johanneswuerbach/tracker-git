@@ -1,4 +1,4 @@
-module Tracker
+module TrackerGit
   class Git
     def contains?(message, options = {})
       branch = options.fetch(:branch, "master")
