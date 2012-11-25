@@ -28,7 +28,7 @@ module TrackerGit
     arg :tracker_api_token, :optional
     arg :git_branch, :optional
 
-    #use_log_level_option
+    use_log_level_option
 
     description TrackerGit::DESCRIPTION
     version TrackerGit::VERSION
