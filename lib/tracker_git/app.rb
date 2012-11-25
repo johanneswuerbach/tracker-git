@@ -8,15 +8,19 @@ module TrackerGit
     include Methadone::Main
     include Methadone::CLILogging
 
+    singleton_class.instance_eval do
+      attr_reader :deliverer, :git, :main_block, :project
+    end
+
     main do |project_id, api_token, branch|
       project_id ||= ENV['TRACKER_PROJECT_ID']
       api_token ||= ENV['TRACKER_TOKEN']
-      branch ||= ENV['GIT_BRANCH']
+      branch ||= ENV['GIT_BRANCH'] || 'master'
 
-      project = TrackerGit::Project.new api_token, project_id
-      git_log = TrackerGit::Git.new
-      deliverer = TrackerGit::Deliverer.new project, git_log
-      deliverer.mark_as_delivered branch
+      @project = TrackerGit::Project.new api_token, project_id
+      @git = TrackerGit::Git.new branch
+      @deliverer = TrackerGit::Deliverer.new @project, @git
+      @deliverer.mark_as_delivered
     end
 
     arg :tracker_project_id, :optional

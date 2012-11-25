@@ -2,28 +2,30 @@ require 'pivotal-tracker'
 
 module TrackerGit
   class Project
+    attr_reader :api_token, :project_id
 
-    attr_reader :tracker_token, :project_id
-
-    def initialize(tracker_token, project_id)
-      @tracker_token = tracker_token
+    def initialize(api_token, project_id)
+      @api_token = api_token
       @project_id = project_id
 
-      PivotalTracker::Client.token = tracker_token
+      PivotalTracker::Client.token = api_token
       PivotalTracker::Client.use_ssl = true
     end
 
+    def tracker_project
+      @project ||= PivotalTracker::Project.find(project_id)
+    end
+
+    def stories
+      tracker_project.stories
+    end
+
     def finished
-      _project.stories.all(state: "finished", story_type: ['bug', 'feature'])
+      stories.all(state: 'finished', story_type: %w(bug feature))
     end
 
     def deliver(story)
-      story.update(current_state: "delivered")
-    end
-
-    private
-    def _project
-      @project ||= PivotalTracker::Project.find(project_id)
+      story.update(current_state: 'delivered')
     end
   end
 end

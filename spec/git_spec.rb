@@ -1,35 +1,31 @@
 require 'spec_helper'
 
 describe TrackerGit::Git do
-  describe "#search" do
-    let(:message) { "[Finishes #123456]" }
-    let(:branch) { "master" }
-    let(:query) { "git log #{branch} --grep='#{message}'"}
-    let(:result) { "Some git message" }
+  describe '#initialize' do
+    let(:git) { TrackerGit::Git.new 'branch' }
+    subject { git.branch }
+    it { should == 'branch' }
+  end
+
+  describe '#contains?' do
+    let(:story_id) { '123456' }
+    let(:log_command) { "git log foo --grep='#{story_id}' --exit-code" }
+    let(:git) { TrackerGit::Git.new 'foo' }
 
     before do
-      git.should_receive(:`).with(query) { result }
-    end
-    let(:git) { TrackerGit::Git.new }
-
-    context "defaults" do
-      it "searches via system calls using default branch" do
-        git.contains?(message).should == true
-      end
+      git.should_receive(:sh).with(log_command).and_return(result)
     end
 
-    context "passing branch" do
-      let(:branch) { "test" }
-      it "searches via system calls using given branch" do
-        git.contains?(message, branch: branch).should == true
-      end
+    subject { git.contains? story_id }
+
+    context 'when the grep pattern matches a commit message in the branch' do
+      let(:result) { 1 }
+      it { should be_true }
     end
 
-    context "no result found" do
-      let(:result) { "" }
-      it "returns false" do
-        git.contains?(message).should == false
-      end
+    context 'when the grep pattern does not match any commit message in the branch' do
+      let(:result) { 0 }
+      it { should be_false }
     end
   end
 end
