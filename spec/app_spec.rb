@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tracker_git'
 
 describe TrackerGit::App do
   describe '@main_block' do

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tracker_git/git'
 
 describe TrackerGit::Git do
   describe '#initialize' do

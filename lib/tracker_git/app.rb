@@ -2,6 +2,7 @@
 
 require 'optparse'
 require 'methadone'
+require 'tracker_git'
 
 module TrackerGit
   class App

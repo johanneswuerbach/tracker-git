@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tracker_git/project'
 
 describe TrackerGit::Project do
   let(:api_token) { stub }

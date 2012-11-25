@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tracker_git/deliverer'
 
 describe TrackerGit::Deliverer do
   let(:committed_story) { stub(id: 1) }
