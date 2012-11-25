@@ -6,38 +6,23 @@ describe TrackerGit::Project do
   let(:project_id) { stub }
   let(:tracker_project) { stub }
 
+  before do
+    PivotalTracker::Project.stub(:find).with(project_id).and_return(tracker_project)
+  end
+
   describe '#initialize' do
-    let!(:project) { TrackerGit::Project.new api_token, project_id }
+    let(:project) { TrackerGit::Project.new api_token, project_id }
 
     describe 'the project instance' do
       subject { project }
-      its(:api_token) { should == api_token }
-      its(:project_id) { should == project_id }
+      its(:tracker_project) { should == tracker_project }
     end
 
     describe 'PivotalTracker::Client' do
+      before { project }
       subject { PivotalTracker::Client }
       its(:use_ssl) { should be_true }
       specify { subject.instance_variable_get(:@token).should == api_token }
-    end
-  end
-
-  describe '#tracker_project' do
-    let(:project) { TrackerGit::Project.new api_token, project_id }
-
-    before do
-      PivotalTracker::Project.stub(:find).with(project_id).once.and_return(tracker_project)
-    end
-
-    subject { project.tracker_project }
-
-    context 'the first time it is accessed' do
-      it { should == tracker_project }
-    end
-
-    context 'the second time it is accessed' do
-      before { project.tracker_project }
-      it { should == tracker_project }
     end
   end
 

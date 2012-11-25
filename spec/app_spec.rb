@@ -5,9 +5,10 @@ describe TrackerGit::App do
   describe '@main_block' do
     let(:app) { TrackerGit::App }
     let(:main_block) { app.main_block }
+    let(:tracker_project) { stub.as_null_object }
 
     before do
-      PivotalTracker::Project.stub(:find).and_return(stub.as_null_object)
+      PivotalTracker::Project.stub(:find).and_return(tracker_project)
     end
 
     describe '.deliverer' do
@@ -50,7 +51,7 @@ describe TrackerGit::App do
 
     describe '.project' do
       let(:id) { stub }
-      let(:token) { stub}
+      let(:token) { stub }
       let(:env) do
         {
           'TRACKER_PROJECT_ID' => id,
@@ -64,8 +65,7 @@ describe TrackerGit::App do
       end
 
       subject { app.project }
-      its(:project_id) { should == id }
-      its(:api_token) { should == token }
+      its(:tracker_project) { should == tracker_project }
     end
   end
 end

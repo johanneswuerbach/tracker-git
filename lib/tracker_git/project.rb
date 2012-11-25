@@ -2,18 +2,13 @@ require 'pivotal-tracker'
 
 module TrackerGit
   class Project
-    attr_reader :api_token, :project_id
+    attr_reader :tracker_project
 
     def initialize(api_token, project_id)
-      @api_token = api_token
-      @project_id = project_id
-
       PivotalTracker::Client.token = api_token
       PivotalTracker::Client.use_ssl = true
-    end
 
-    def tracker_project
-      @project ||= PivotalTracker::Project.find(project_id)
+      @tracker_project = PivotalTracker::Project.find project_id
     end
 
     def stories
