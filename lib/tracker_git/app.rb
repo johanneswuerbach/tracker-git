@@ -22,12 +22,20 @@ module TrackerGit
 
       @project = TrackerGit::Project.new api_token, project_id
       @git = TrackerGit::Git.new branch
-      @deliverer = TrackerGit::Deliverer.new @project, @git
+
+      @deliverer = TrackerGit::Deliverer.new(
+        project: @project,
+        git: @git,
+        note_delivery: options['note-delivery']
+      )
+
       @deliverer.mark_as_delivered
     end
 
     on '--current-branch', '-c',
        'Do not specify a branch to use when searching commit messages'
+    on '--note-delivery', '-n',
+       'Add a comment to each delivered story'
 
     arg :tracker_project_id, :optional,
         "A Tracker project ID is required. Pass it as an argument, or set the\n" +

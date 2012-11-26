@@ -4,4 +4,6 @@ module TrackerGit
   DESCRIPTION = GEM_DESCRIPTION =
     %q{Tracker/Git integration: Update Tracker based on current Git repo.}
   GEM_SUMMARY = %q{Tracker/Git integration.}
+
+  DELIVERY_NOTE = %q{Delivered by tracker-git}
 end

@@ -2,6 +2,13 @@ require 'spec_helper'
 require 'tracker_git'
 
 describe TrackerGit::App do
+  before do
+    TrackerGit::App.stub(:debug)
+    TrackerGit::App.stub(:info)
+    TrackerGit::Project.any_instance.stub(:debug)
+    TrackerGit::Project.any_instance.stub(:info)
+  end
+
   describe '@main_block' do
     let(:app) { TrackerGit::App }
     let(:main_block) { app.main_block }
@@ -19,12 +26,15 @@ describe TrackerGit::App do
         TrackerGit::Git.stub(:new).and_return(git)
         TrackerGit::Project.stub(:new).and_return(project)
         TrackerGit::Deliverer.any_instance.should_receive(:mark_as_delivered)
+        TrackerGit::App.stub(:options).and_return('note-delivery' => true)
         main_block.call
       end
 
       subject { app.deliverer }
+
       its(:git) { should == git }
       its(:project) { should == project }
+      its(:note_delivery) { should be_true }
     end
 
     describe '.git' do

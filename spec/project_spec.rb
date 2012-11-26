@@ -2,9 +2,14 @@ require 'spec_helper'
 require 'tracker_git/project'
 
 describe TrackerGit::Project do
+  before do
+    TrackerGit::Project.any_instance.stub(:debug)
+    TrackerGit::Project.any_instance.stub(:info)
+  end
+
   let(:api_token) { stub }
   let(:project_id) { stub }
-  let(:tracker_project) { stub }
+  let(:tracker_project) { stub.as_null_object }
 
   before do
     PivotalTracker::Project.stub(:find).with(project_id).and_return(tracker_project)
@@ -53,13 +58,25 @@ describe TrackerGit::Project do
 
   describe '#deliver' do
     let(:project) { TrackerGit::Project.new api_token, project_id }
-    let(:story) { stub }
+    let(:story) { stub.as_null_object }
 
     before do
-      story.should_receive(:update).with(current_state: 'delivered').and_return('result')
+      story.should_receive(:update).with(current_state: 'delivered')
     end
 
-    subject { project.deliver(story) }
-    it { should == 'result' }
+    specify { project.deliver(story) }
+  end
+
+  describe '#note_delivery' do
+    let(:project) { TrackerGit::Project.new api_token, project_id }
+    let(:story) { stub }
+    let(:notes) { stub }
+
+    before do
+      story.stub(:notes).and_return(notes)
+      notes.should_receive(:create).with(text: 'Delivered by tracker-git').and_return(stub.as_null_object)
+    end
+
+    specify { project.note_delivery(story) }
   end
 end

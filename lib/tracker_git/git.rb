@@ -23,12 +23,12 @@ module TrackerGit
 
     def contains?(story_id)
       sh "#{log_command} -i -E --grep=\"#{grep_pattern story_id}\"" do |stdout, stderr|
-        if !stdout.strip.empty?
-          info "Found commit messages matching ##{story_id}"
-          return true
-        else
-          info "Found no commit messages matching ##{story_id}"
+        if stdout.strip.empty?
+          info "Found no commit messages referring to ##{story_id}"
           return false
+        else
+          info "Found commit messages referring to ##{story_id}"
+          return true
         end
       end
     end
