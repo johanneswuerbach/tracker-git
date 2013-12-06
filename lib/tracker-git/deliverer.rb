@@ -9,7 +9,7 @@ module Tracker
     def mark_as_delivered(options={})
       project.finished.each do |story|
         if git.contains?(story.id, options)
-          puts "Delivering story #{story}"
+          puts " - Delivering story ##{story.id}"
           unless options[:dryrun]
             project.deliver(story)
           end
