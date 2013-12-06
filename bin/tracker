@@ -5,6 +5,39 @@ rescue LoadError
   require 'rubygems'
   require 'tracker-git'
 end
+require 'optparse'
+
+options = {}
+optparse = OptionParser.new do |opts|
+  opts.banner = <<-USAGE
+Usage: #{$0} [options] TRACKER_PROJECT_ID TRACKER_TOKEN [GIT_BRANCH]
+   or: #{$0} [options]
+  USAGE
+  opts.separator ""
+  opts.separator "Options:"
+
+  opts.on("-n", "--dry-run", "Do a dry run (print what would be done, rather than updating tracker)") do |v|
+    options[:dryrun] = v
+  end
+  opts.on("-r", "--range GIT_RANGE", "Specify the git range to use") do |v|
+    options[:range] = v
+  end
+
+  opts.separator ""
+  opts.separator <<-USAGE
+Pass your pivotal tracker project id and access token on the command
+line, e.g:
+  tracker 123456 abc123
+
+or as an environment variable:
+
+  export TRACKER_PROJECT_ID=123456
+  export TRACKER_TOKEN=abc123
+  tracker
+
+  USAGE
+end
+optparse.parse!
 
 project_id, tracker_token, git_branch = \
   if [2, 3].include? ARGV.size
@@ -14,19 +47,11 @@ project_id, tracker_token, git_branch = \
   end
 
 unless tracker_token && project_id
-  puts <<-USAGE
-Usage: Pass your pivotal tracker project id and access token on the command
-line, e.g:
-  tracker 123456 abc123
-or as an environment variable:
-  export TRACKER_PROJECT_ID=123456
-  export TRACKER_TOKEN=abc123
-  tracker
-  USAGE
-	exit(1)
+  puts optparse
+  exit(-1)
 end
 
 project = Tracker::Project.new(tracker_token, project_id)
 git = Tracker::Git.new
 deliverer = Tracker::Deliverer.new(project, git)
-deliverer.mark_as_delivered(git_branch)
+deliverer.mark_as_delivered(options.merge({branch: git_branch})

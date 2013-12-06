@@ -6,13 +6,14 @@ module Tracker
       @git = git
     end
 
-    def mark_as_delivered(branch = nil)
-      options = {}
-      options[:branch] = branch if branch
-
+    def mark_as_delivered(options={})
       project.finished.each do |story|
         if git.contains?(story.id, options)
-          project.deliver(story)
+          if options[:dryrun]
+            puts "Delivering story #{story}"
+          else
+            project.deliver(story)
+          end
         end
       end
     end

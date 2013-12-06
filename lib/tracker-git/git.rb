@@ -1,9 +1,11 @@
 module Tracker
   class Git
-    def contains?(message, options = {})
+    def contains?(story_id, options = {})
       branch = options.fetch(:branch, "master")
-      result = `git log #{branch} --grep='#{message}'`
-      result.length > 0
+      range  = options.fetch(:range, "");
+      command = "git log #{branch} #{range}".strip
+      result = `#{command}`
+      result =~ /\[##{story_id}\]/ ? true : false
     end
   end
 end
