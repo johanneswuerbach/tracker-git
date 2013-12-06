@@ -54,4 +54,4 @@ end
 project = Tracker::Project.new(tracker_token, project_id)
 git = Tracker::Git.new
 deliverer = Tracker::Deliverer.new(project, git)
-deliverer.mark_as_delivered(options.merge({branch: git_branch})
+deliverer.mark_as_delivered(options.merge({branch: git_branch}))
